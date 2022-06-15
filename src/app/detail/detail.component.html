@@ -1,0 +1,82 @@
+<div [formGroup]="exgtForm">
+  <table>
+    <tr>
+      <th>交易序號:</th>
+      <td>
+        <input type="text" formControlName="exgcId">
+      </td>
+    </tr>
+    <tr>
+      <th>會員代號/名稱:</th>
+      <td>
+        <input type="text" formControlName="exgcCmNoAndName">
+      </td>
+    </tr>
+    <tr>
+      <th>結算帳戶/名稱/類別:</th>
+      <td>
+        <input type="text" formControlName="exgcSettAccNoAndName">
+      </td>
+    </tr>
+    <tr>
+      <th>存入銀行:</th>
+      <td>
+        <select formControlName="exgtApplyIbankNo">
+          <option disabled value="null" selected="selected"></option>
+          <option *ngFor="let bank of bankList" [value]="bank.kacBankNo">
+             {{bank.kacBankNo}} {{bank.kacBankName}}
+          </option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th>存入幣別/金額:</th>
+      <td>
+        <input type="text" formControlName="exgtApplyIccy">
+      </td>
+      <td>
+        <input type="text" formControlName="exgtApplyIamt">
+      </td>
+    </tr>
+    <tr>
+      <th>提領銀行:</th>
+      <td>
+        <select formControlName="exgtApplyObankNo">
+          <option disabled value="null" selected="selected"></option>
+          <option *ngFor="let bank of bankList" [value]="bank.kacBankNo">
+             {{bank.kacBankNo}} {{bank.kacBankName}}
+          </option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <th>提領幣別/金額:</th>
+      <td>
+        <input type="text" formControlName="exgtApplyOccy">
+      </td>
+      <td>
+        <input type="text" formControlName="exgtApplyOamt">
+      </td>
+    </tr>
+    <tr>
+      <th>換匯匯率:</th>
+      <td>
+        <input type="text" formControlName="exgtEx1Rate">
+      </td>
+    </tr>
+    <tr>
+      <th>約當匯率:</th>
+      <td>
+        <input type="text" formControlName="exgtEx2Rate">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button *ngIf="nextStep == 'execute'" (click)="executeBackToAll()">儲存</button>
+        <button *ngIf="nextStep == 'reverse'" (click)="reverseBackToAll(sendDetailData.exgcId)">沖正</button>
+        <button *ngIf="nextStep == 'detail'" (click)="backToAllData()">返回</button>
+        <button *ngIf="nextStep != 'detail'" (click)="backToAllData()">取消</button>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,70 @@
+<table mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="exgcId">
+    <th mat-header-cell *matHeaderCellDef> 申請序號 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcITime">
+    <th mat-header-cell *matHeaderCellDef> 申請日期 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcITime | date: 'yyyy/MM/dd'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcCmNoAndName">
+    <th mat-header-cell *matHeaderCellDef> 結算會員代號及名稱 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcCmNo}} {{data.exgcCmName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcSettAccNoAndName">
+    <th mat-header-cell *matHeaderCellDef> 結算帳戶/名稱 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcSettAccNo}} {{data.exgcSettName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcAccType">
+    <th mat-header-cell *matHeaderCellDef> 類別 </th>
+    <td mat-cell *matCellDef="let data"> {{accTypeMapping[data.exgcAccType]}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcSCcy">
+    <th mat-header-cell *matHeaderCellDef> 保證金不足幣別 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcSCcy}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcTAmt">
+    <th mat-header-cell *matHeaderCellDef> 金額 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcSCcy != 'TWD' ? (data.exgcTAmt | number: '1.2-2') : (data.exgcTAmt
+      | number: '1.0')}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcOCcy">
+    <th mat-header-cell *matHeaderCellDef> 代結匯幣別 </th>
+    <td mat-cell *matCellDef="let data"> {{data.exgcOCcy}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exgcStatus">
+    <th mat-header-cell *matHeaderCellDef> 結算會員申請狀態 </th>
+    <td mat-cell *matCellDef="let data"> {{exgStatusConst[data.exgcStatus]}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="taifexExgtStatus">
+    <th mat-header-cell *matHeaderCellDef> Taifex執行狀態 </th>
+    <td mat-cell *matCellDef="let data"> {{data.mgnExgt != null ? exgStatusConst[data.mgnExgt.exgtStatus] : ''}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef> 操作 </th>
+    <td mat-cell *matCellDef="let data">
+      <button *ngIf="data.exgcStatus == '0' && data.mgnExgt != null ? data.mgnExgt.exgtStatus == 0 : false"
+        (click)="buttonAction('detail', data.exgcId)">明細</button>
+      <button *ngIf="data.exgcStatus == '1'" (click)="buttonAction('execute', data.exgcId)">執行</button>
+      <button *ngIf="data.exgcStatus == '0' && data.mgnExgt != null ? data.mgnExgt.exgtStatus == 0 : false"
+        (click)="buttonAction('reverse', data.exgcId)">沖正</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [length]="totalCount" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 15]">
+</mat-paginator>
